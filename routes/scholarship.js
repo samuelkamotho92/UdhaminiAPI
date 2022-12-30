@@ -19,6 +19,19 @@ router.post("/premium", verifyTokenAndPremiumTier, async (req, res) => {
         res.status(500).json(err);
     }
 });
+// get non premium scholarships [done]
+router.get("/nonPremium", async (req, res) => {
+    try {
+        const premiumScholarships = await Scholarship.find({ premium_tier: false });
+        if (premiumScholarships.length > 0) {
+            res.status(200).json(premiumScholarships);
+        } else {
+            res.status(200).json("No NonPremium Scholarships found");
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 //Admin Tasks
 //Create [done]
