@@ -1,24 +1,45 @@
 const router = require('express').Router();
 const Scholarship = require('../models/Scholarship');
-//Create
-router.post('/register', async (req, res) => {
-    const newScolarship = new Scholarship(req.body);
+const Admin = require('../models/Admin');
+const User = require('../models/User');
+const { verifyTokenAndPremiumTier, verifyTokenAndAdmin } = require("./verifyToken");
+
+//User Tasks
+
+//GET premium scholarships [done]
+router.post("/premium", verifyTokenAndPremiumTier, async (req, res) => {
     try {
-        const savedScholarship = await newScolarship.save();
+        const premiumScholarships = await Scholarship.find({ premium_tier: true });
+        if (premiumScholarships.length > 0) {
+            res.status(200).json(premiumScholarships);
+        } else {
+            res.status(200).json("no Premium Scholarships found");
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+//Admin Tasks
+//Create [done]
+router.post('/adminRegister', verifyTokenAndAdmin, async (req, res) => {
+    const newScholarship = new Scholarship(req.body);
+    try {
+        const savedScholarship = await newScholarship.save();
         res.status(200).json(savedScholarship);
     } catch (err) {
         res.status(500).json(err);
     }
 });
-//UPDATE
-router.put("/:id", async (req, res) => {
-    const ScolarshipExist = await Scholarship.findById(req.params.id); //check if the scholarship exists via id
-    if (ScolarshipExist) {
+//UPDATE [done]
+router.put("/adminUpdate", verifyTokenAndAdmin, async (req, res) => {
+    const ScholarshipExist = await Scholarship.findById(req.body.id); //check if the scholarship exists via id
+    if (ScholarshipExist) {
         try {
-            const updatedScolarship = await Scholarship.findByIdAndUpdate(req.params.id, {
+            const updatedScholarship = await Scholarship.findByIdAndUpdate(req.body.id, {
                 $set: req.body,
             }, { new: true });
-            res.status(200).json(updatedScolarship);
+            res.status(200).json(updatedScholarship);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -27,12 +48,12 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-//DELETE
-router.delete("/:id", async (req, res) => {
-    const ScolarshipExist = await Scholarship.findById(req.params.id); //check if the scholarship exists via id
+//DELETE [done]
+router.delete("/adminDelete", verifyTokenAndAdmin, async (req, res) => {
+    const ScolarshipExist = await Scholarship.findById(req.body.id); //check if the scholarship exists via id
     if (ScolarshipExist) {
         try {
-            await Scholarship.findByIdAndDelete(req.params.id);    //we delete the user via id        
+            await Scholarship.findByIdAndDelete(req.body.id);    //we delete the user via id        
             res.status(200).json("scholarship has been deleted!");
         } catch (err) {
             res.status(500).json(err);
@@ -42,7 +63,7 @@ router.delete("/:id", async (req, res) => {
     }
 });
 //GET all scholarship
-router.get("/all", async (req, res) => {
+router.get("/adminAll", verifyTokenAndAdmin, async (req, res) => {
     try {
         const allScholarships = await Scholarship.find();
         if (allScholarships.length > 0) {
@@ -55,10 +76,24 @@ router.get("/all", async (req, res) => {
     }
 });
 
-//GET One Scholarship
-router.get("/:id", async (req, res) => {
+//GET premium [done]
+router.get("/adminPremium", verifyTokenAndAdmin, async (req, res) => {
     try {
-        const ScolarshipExist = await Scholarship.findById(req.params.id);
+        const premiumScholarships = await Scholarship.find({ premium_tier: true });
+        if (premiumScholarships.length > 0) {
+            res.status(200).json(premiumScholarships);
+        } else {
+            res.status(200).json("no Premium Scholarships found");
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+//GET One Scholarship
+router.get("/adminOne", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const ScolarshipExist = await Scholarship.findById(req.body.id);
         if (ScolarshipExist) {
             res.status(200).json(ScolarshipExist);
         } else {

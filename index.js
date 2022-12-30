@@ -7,6 +7,7 @@ const path = require('path');
 const cors = require('cors');
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/users');
+const adminRoute = require('./routes/admin');
 const scholarshipRoute = require('./routes/scholarship');
 
 
@@ -21,7 +22,6 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,
 }).then(console.log("connected to mongodb"))
     .catch((err) => console.log(err));
-
 //storage to store images using multer library
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -41,22 +41,32 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 //define my routes
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/admin", adminRoute);
 app.use("/api/scholarship", scholarshipRoute); //api/scholarship/register
 
 //server running port
 app.listen(process.env.PORT || 5000, () => {
     console.log('Server running');
 });
+
+   //Routes for users
+//[GET] api/users/all
+//[PUT] api/users/:id
+//[DELETE] api/users/:id
+//[GET] api/users/:id
+
+
     //Routes for scholarship
 //[POST] api/scholarship/register
 //[PUT] api/scholarship/:id
 //[DELETE] api/scholarship/:id
 //[GET] api/scholarship/:id
 //[GET] api/scholarship/all
+//[POST] api/scholarship/premium
 
     //Routes for Auth
-//[POST] api/auth/register
-//[POST] api/auth/login
+//[POST] api/auth/userRegister
+//[POST] api/auth/userLogin
 
     //Routes for users
 //[GET] api/users/all

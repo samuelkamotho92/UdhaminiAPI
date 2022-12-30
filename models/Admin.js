@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
-const UserSchema = new mongoose.Schema({
+const AdminSchema = new mongoose.Schema({
+    isAdmin: {
+        type: Boolean,
+        default: true,
+    },
     fullname: {
         type: String,
         required: true,
@@ -16,14 +20,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
-    education_level: {
-        type: String,
-        required: true,
-    },
-    gpa: {
-        type: Number,
-        required: true,
     },
     country: {
         type: String,
@@ -42,12 +38,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
-    premium_tier_available: {
-        type: Boolean,
-        default: false,
-    }
 },
     { timestamps: true }
 );
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Admin', AdminSchema);
