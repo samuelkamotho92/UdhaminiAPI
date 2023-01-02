@@ -53,6 +53,14 @@ app.use("/api/image", imageUploadRoute); //api/image/imageUpload
 app.listen(process.env.PORT || 5000, () => {
     console.log('Server running');
 });
+    //routes for admin
+//[POST] api/admin/adminRegister
+//[POST] api/admin/adminLogin
+//[PUT] api/admin/:id
+//[DELETE] api/admin/:id
+//[GET] api/admin/:id
+//[GET] api/admin/allUsers
+
 
     //Routes for image
 //[POST] api/image/imageUpload

@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const Scholarship = require('../models/Scholarship');
-const Admin = require('../models/Admin');
-const User = require('../models/User');
 const { verifyTokenAndPremiumTier, verifyTokenAndAdmin } = require("./verifyToken");
 
 //User Tasks
@@ -35,7 +33,7 @@ router.get("/nonPremium", async (req, res) => {
 
 //Admin Tasks
 //Create [done]
-router.post('/adminRegister', verifyTokenAndAdmin, async (req, res) => {
+router.post('/register', verifyTokenAndAdmin, async (req, res) => {
     const newScholarship = new Scholarship(req.body);
     try {
         const savedScholarship = await newScholarship.save();
@@ -45,7 +43,7 @@ router.post('/adminRegister', verifyTokenAndAdmin, async (req, res) => {
     }
 });
 //UPDATE [done]
-router.put("/adminUpdate", verifyTokenAndAdmin, async (req, res) => {
+router.put("/update", verifyTokenAndAdmin, async (req, res) => {
     const ScholarshipExist = await Scholarship.findById(req.body.id); //check if the scholarship exists via id
     if (ScholarshipExist) {
         try {
@@ -62,7 +60,7 @@ router.put("/adminUpdate", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //DELETE [done]
-router.delete("/adminDelete", verifyTokenAndAdmin, async (req, res) => {
+router.delete("/delete", verifyTokenAndAdmin, async (req, res) => {
     const ScolarshipExist = await Scholarship.findById(req.body.id); //check if the scholarship exists via id
     if (ScolarshipExist) {
         try {
@@ -76,7 +74,7 @@ router.delete("/adminDelete", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 //GET all scholarship
-router.get("/adminAll", verifyTokenAndAdmin, async (req, res) => {
+router.get("/all", verifyTokenAndAdmin, async (req, res) => {
     try {
         const allScholarships = await Scholarship.find();
         if (allScholarships.length > 0) {
@@ -90,9 +88,12 @@ router.get("/adminAll", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET premium [done]
-router.get("/adminPremium", verifyTokenAndAdmin, async (req, res) => {
+router.post("/onePremium/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
-        const premiumScholarships = await Scholarship.find({ premium_tier: true });
+        const premiumScholarships = await Scholarship.find({
+            premium_tier: true,
+            _id: req.body.id
+        });
         if (premiumScholarships.length > 0) {
             res.status(200).json(premiumScholarships);
         } else {
@@ -103,11 +104,14 @@ router.get("/adminPremium", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-//GET One Scholarship
-router.get("/adminOne", verifyTokenAndAdmin, async (req, res) => {
+//GET One nonPremiumScholarship [done]
+router.post("/oneNonPremium", async (req, res) => {
     try {
-        const ScolarshipExist = await Scholarship.findById(req.body.id);
-        if (ScolarshipExist) {
+        const nonPremiumScholarships = await Scholarship.find({
+            premium_tier: false,
+            _id: req.body.id
+        });
+        if (nonPremiumScholarships) {
             res.status(200).json(ScolarshipExist);
         } else {
             res.status(404).json("scholarship doesnt exist!");
