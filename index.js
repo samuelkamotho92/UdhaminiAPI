@@ -9,6 +9,7 @@ const authRoute = require('./routes/auth');
 const userRoute = require('./routes/users');
 const adminRoute = require('./routes/admin');
 const scholarshipRoute = require('./routes/scholarship');
+const imageUploadRoute = require('./routes/imageUpload');
 
 
 //middlewares
@@ -23,31 +24,39 @@ mongoose.connect(process.env.MONGO_URL, {
 }).then(console.log("connected to mongodb"))
     .catch((err) => console.log(err));
 //storage to store images using multer library
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images');
-    },
-    filename: (req, file, cb) => {
-        cb(null, req.body.name);
-    }
-});
-//upload file
-const upload = multer({ storage: storage });
-//set upload route
-app.post('/api/upload', upload.single('file'), (req, res) => {
-    res.send("File has been Uploaded");
-});
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'images');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, req.body.name);
+//     }
+// });
+// //upload file
+// const upload = multer({ storage: storage });
+// //set upload route
+// app.post('/api/upload', upload.single('file'), (req, res) => {
+//     res.send("File has been Uploaded");
+// });
+
+
+
 
 //define my routes
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/scholarship", scholarshipRoute); //api/scholarship/register
+app.use("/api/image", imageUploadRoute); //api/image/imageUpload
 
 //server running port
 app.listen(process.env.PORT || 5000, () => {
     console.log('Server running');
 });
+
+    //Routes for image
+//[POST] api/image/imageUpload
+//[DELETE] api/image/imageDelete/:fileName
 
    //Routes for users
 //[GET] api/users/all

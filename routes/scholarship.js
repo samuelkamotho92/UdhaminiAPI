@@ -23,7 +23,7 @@ router.post("/premium", verifyTokenAndPremiumTier, async (req, res) => {
 router.get("/nonPremium", async (req, res) => {
     try {
         const premiumScholarships = await Scholarship.find({ premium_tier: false });
-        if (premiumScholarships.length > 0) {
+        if (premiumScholarships) {
             res.status(200).json(premiumScholarships);
         } else {
             res.status(200).json("No NonPremium Scholarships found");
