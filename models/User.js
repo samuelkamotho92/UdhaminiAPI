@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
     },
     profilepic: {
         type: String,
-        default: '',
+        default: 'mypic',
     },
     premium_tier_available: {
         type: Boolean,

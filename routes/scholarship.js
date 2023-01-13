@@ -88,7 +88,7 @@ router.get("/all", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET premium [done]
-router.post("/onePremium/:id", verifyTokenAndAdmin, async (req, res) => {
+router.post("/onePremium", verifyTokenAndAdmin, async (req, res) => {
     try {
         const premiumScholarships = await Scholarship.find({
             premium_tier: true,
@@ -112,7 +112,7 @@ router.post("/oneNonPremium", async (req, res) => {
             _id: req.body.id
         });
         if (nonPremiumScholarships) {
-            res.status(200).json(ScolarshipExist);
+            res.status(200).json(nonPremiumScholarships);
         } else {
             res.status(404).json("scholarship doesnt exist!");
         }

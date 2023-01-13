@@ -4,7 +4,6 @@ const { verifyTokenAndAuthorization } = require("./verifyToken");
 
 //REGISTER USER
 router.post('/register', async (req, res) => {
-    // res.status(200).json({ message: "Register" });
     try {
         const existingUser = await User.findOne({ username: req.body.username });
         if (!existingUser) {
