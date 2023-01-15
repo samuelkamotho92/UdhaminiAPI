@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const User = require('../models/User');
 const { verifyTokenAndAuthorization } = require("./verifyToken");
-
+const CryptoJS = require("crypto-js");
 //REGISTER USER
 router.post('/register', async (req, res) => {
     try {

@@ -18,6 +18,7 @@ app.use(express.json()); //app is able to send JSON requests
 app.use("/images", express.static(path.join(__dirname, '/images'))); //using path lib to acess images in folders
 app.use(cors());
 //connect to mongodb
+mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
