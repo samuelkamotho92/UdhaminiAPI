@@ -3,8 +3,7 @@
 # dependencies
 /node_modules
 .pnp.js
-.env
-env
+
 
 # testing
 /coverage
@@ -13,3 +12,6 @@ env
 /build
 
 npm-debug.log*
+*.env
+*.log
+env
