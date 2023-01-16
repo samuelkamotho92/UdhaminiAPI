@@ -19,7 +19,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("You are not alowed to do that!");
+      res.status(403).json("You are not allowed to do that!");
     }
   });
 };
@@ -29,7 +29,7 @@ const verifyTokenAndPremiumTier = (req, res, next) => {
     if (req.body.premium_tier) {
       next();
     } else {
-      res.status(403).json("You are not alowed for premium_tier!");
+      res.status(403).json("You are not allowed for premium_tier!");
     }
   });
 };
@@ -39,7 +39,7 @@ const verifyTokenAndAdmin = (req, res, next) => {
     if (req.body.isAdmin) {
       next();
     } else {
-      res.status(403).json("You are not alowed to do that!");
+      res.status(403).json("You are not allowed to do that!");
     }
   });
 };
