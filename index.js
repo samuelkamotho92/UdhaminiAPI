@@ -8,6 +8,7 @@ const authRoute = require('./routes/auth');
 const userRoute = require('./routes/users');
 const adminRoute = require('./routes/admin');
 const scholarshipRoute = require('./routes/scholarship');
+const stripeRoute = require("./routes/stripe");
 // const imageUploadRoute = require('./routes/imageUpload');
 
 
@@ -28,6 +29,7 @@ mongoose.connect(process.env.MONGO_URL, {
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/admin", adminRoute);
+app.use("/api/checkout", stripeRoute);
 app.use("/api/scholarship", scholarshipRoute); //api/scholarship/register
 // app.use("/api/image", imageUploadRoute); //api/image/imageUpload
 

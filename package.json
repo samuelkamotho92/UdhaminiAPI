@@ -9,13 +9,14 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.3.4",
     "nodemon": "^2.0.16",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "stripe": "^11.6.0"
   },
   "name": "udhamini-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

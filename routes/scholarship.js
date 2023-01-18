@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const Scholarship = require('../models/Scholarship');
-const { verifyTokenAndPremiumTier, verifyTokenAndAdmin } = require("./verifyToken");
+const { verifyTokenAndPremiumTier, verifyTokenAndAdmin, verifyToken } = require("./verifyToken");
 
 //User Tasks
 
@@ -88,11 +88,11 @@ router.get("/all", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET premium [done]
-router.post("/onePremium", verifyTokenAndAdmin, async (req, res) => {
+router.post("/onePremium/:id", verifyToken, async (req, res) => {
     try {
         const premiumScholarships = await Scholarship.find({
             premium_tier: true,
-            _id: req.body.id
+            _id: req.params.id
         });
         if (premiumScholarships.length > 0) {
             res.status(200).json(premiumScholarships);
