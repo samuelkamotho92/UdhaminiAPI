@@ -38,7 +38,7 @@ router.get("/oneAdmin/:id", verifyToken, async (req, res) => {
 module.exports = router
 
 // REGISTER ADMIN [done]
-router.post('/register', verifyToken, async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const existingAdmin = await Admin.findOne({ username: req.body.username });
         if (!existingAdmin) {
