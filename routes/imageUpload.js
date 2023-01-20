@@ -8,6 +8,7 @@ const blobServiceClient = new BlobServiceClient(`https://${process.env.AZURE_STO
 
 router.post('/imageUpload', async (req, res) => {
     try {
+        console.log(req.body);
         const { originalname } = req.body.image;
         const fileName = `${Date.now()}${path.extname(originalname)}`; // Get the file name and extension of the image        
         const containerClient = blobServiceClient.getContainerClient('images'); // Get a reference to the container in the storage account       
