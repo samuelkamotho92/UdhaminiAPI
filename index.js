@@ -9,7 +9,7 @@ const userRoute = require('./routes/users');
 const adminRoute = require('./routes/admin');
 const scholarshipRoute = require('./routes/scholarship');
 const stripeRoute = require("./routes/stripe");
-// const imageUploadRoute = require('./routes/imageUpload');
+const multer = require('multer');
 
 
 //middlewares
@@ -17,6 +17,26 @@ dotenv.config();
 app.use(express.json()); //app is able to send JSON requests
 app.use("/images", express.static(path.join(__dirname, '/images'))); //using path lib to acess images in folders
 app.use(cors());
+app.use("/images", express.static(path.join(__dirname, '/images'))); //using path lib to acess images in folders
+
+
+//storage to store images
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, req.body.name);
+    }
+});
+//upload file
+const upload = multer({ storage: storage });
+
+//set upload route
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    res.send("File has been Uploaded");
+});
+
 //connect to mongodb
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URL, {
@@ -31,7 +51,7 @@ app.use("/api/users", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/checkout", stripeRoute);
 app.use("/api/scholarship", scholarshipRoute); //api/scholarship/register
-// app.use("/api/image", imageUploadRoute); //api/image/imageUpload
+
 
 //server running port
 app.listen(process.env.PORT || 5000, () => {
@@ -47,8 +67,7 @@ app.listen(process.env.PORT || 5000, () => {
 
 
     //Routes for image
-//[POST] api/image/imageUpload
-//[DELETE] api/image/imageDelete/:fileName
+//[POST] api/image/
 
    //Routes for users
 //[GET] api/users/all

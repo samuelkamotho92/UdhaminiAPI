@@ -34,7 +34,7 @@ const AdminSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profilepic: {
+    photo: {
         type: String,
         default: '',
     },

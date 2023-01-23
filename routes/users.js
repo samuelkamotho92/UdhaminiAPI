@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
                     education_level: req.body.education_level,
                     gpa: req.body.gpa,
                     country: req.body.country,
-                    profilepic: req.body.profilepic,
+                    photo: req.body.photo,
                     username: req.body.username,
                     email: req.body.email,
                     password: CryptoJS.AES.encrypt(
