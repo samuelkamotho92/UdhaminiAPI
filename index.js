@@ -8,14 +8,14 @@ const authRoute = require('./routes/auth');
 const userRoute = require('./routes/users');
 const adminRoute = require('./routes/admin');
 const scholarshipRoute = require('./routes/scholarship');
-const stripeRoute = require("./routes/stripe");
-// const imageUploadRoute = require('./routes/imageUpload');
+//const imageUploadRoute = require('./routes/imageUpload');
 
 
 //middlewares
 dotenv.config();
 app.use(express.json()); //app is able to send JSON requests
-app.use("/images", express.static(path.join(__dirname, '/images'))); //using path lib to acess images in folders
+//app.use("/images", express.static(path.join(__dirname, '/images')));
+ //using path lib to acess images in folders
 app.use(cors());
 //connect to mongodb
 mongoose.set('strictQuery', true);
@@ -31,10 +31,11 @@ app.use("/api/users", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/checkout", stripeRoute);
 app.use("/api/scholarship", scholarshipRoute); //api/scholarship/register
-// app.use("/api/image", imageUploadRoute); //api/image/imageUpload
+//app.use("/api/image", imageUploadRoute);
+ //api/image/imageUpload
 
 //server running port
-app.listen(process.env.PORT || 5000, () => {
+app.listen( 8000, () => {
     console.log('Server running');
 });
     //routes for admin

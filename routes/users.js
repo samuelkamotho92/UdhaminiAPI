@@ -4,6 +4,8 @@ const { verifyTokenAndAuthorization } = require("./verifyToken");
 const CryptoJS = require("crypto-js");
 //REGISTER USER
 router.post('/register', async (req, res) => {
+    console.log(req.body);
+    // res.status(200).json({ message: "Register" });
     try {
         const existingUser = await User.findOne({ username: req.body.username });
         if (!existingUser) {
@@ -21,6 +23,10 @@ router.post('/register', async (req, res) => {
                     email: req.body.email,
                     password: CryptoJS.AES.encrypt(
                         req.body.password,
+                        process.env.PASS_SEC
+                    ).toString(),
+                    passwordConfirm: CryptoJS.AES.encrypt(
+                        req.body.passwordConfirm,
                         process.env.PASS_SEC
                     ).toString(),
                 });

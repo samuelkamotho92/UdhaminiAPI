@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 const UserSchema = new mongoose.Schema({
     fullname: {
         type: String,
@@ -37,6 +38,16 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    passwordConfirm:{
+        type:String,
+        required:[true,'please enter password confirmation'],
+        validate:{
+            validator: function (pass) {
+                return pass === this.password
+            },
+            message:'password does not match'
+        }
     },
     profilepic: {
         type: String,
