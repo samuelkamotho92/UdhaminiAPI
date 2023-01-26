@@ -6,12 +6,13 @@ const { verifyTokenAndPremiumTier, verifyTokenAndAdmin, verifyToken } = require(
 
 //GET premium scholarships [done]
 router.post("/premium", verifyTokenAndPremiumTier, async (req, res) => {
+
     try {
         const premiumScholarships = await Scholarship.find({ premium_tier: true });
-        if (premiumScholarships.length > 0) {
+        if (premiumScholarships) {
             res.status(200).json(premiumScholarships);
         } else {
-            res.status(200).json("no Premium Scholarships found");
+            res.status(200).json({ message: "no Premium Scholarships found" });
         }
     } catch (err) {
         res.status(500).json(err);
@@ -37,13 +38,13 @@ router.post('/register', verifyTokenAndAdmin, async (req, res) => {
     const newScholarship = new Scholarship(req.body);
     try {
         const savedScholarship = await newScholarship.save();
-        res.status(200).json(savedScholarship);
+        res.status(200).json("scholarship created successfully");
     } catch (err) {
         res.status(500).json(err);
     }
 });
 //UPDATE [done]
-router.put("/update", verifyTokenAndAdmin, async (req, res) => {
+router.put("/update", verifyToken, async (req, res) => {
     const ScholarshipExist = await Scholarship.findById(req.body.id); //check if the scholarship exists via id
     if (ScholarshipExist) {
         try {
@@ -60,17 +61,17 @@ router.put("/update", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //DELETE [done]
-router.delete("/delete", verifyTokenAndAdmin, async (req, res) => {
-    const ScolarshipExist = await Scholarship.findById(req.body.id); //check if the scholarship exists via id
+router.delete("/delete/:id", verifyToken, async (req, res) => {
+    const ScolarshipExist = await Scholarship.findById(req.params.id); //check if the scholarship exists via id
     if (ScolarshipExist) {
         try {
-            await Scholarship.findByIdAndDelete(req.body.id);    //we delete the user via id        
+            await Scholarship.findByIdAndDelete(req.params.id);    //we delete the user via id        
             res.status(200).json("scholarship has been deleted!");
         } catch (err) {
             res.status(500).json(err);
         }
     } else {
-        res.status(404).json("scholarship doesnt exist!");
+        res.status(404).json("scholarship doesn't exist!");
     }
 });
 //GET all scholarship

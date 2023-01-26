@@ -113,3 +113,12 @@ router.delete("/delete/:id", verifyTokenAndAuthorization, async (req, res) => {
         res.status(200).json("Admin not found!");
     }
 });
+
+router.delete("/deleteUser/:id", verifyToken, async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.status(200).json("User has been deleted...");
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});

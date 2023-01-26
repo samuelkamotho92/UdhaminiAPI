@@ -57,7 +57,8 @@ router.put("/update/:id", verifyTokenAndAuthorization, async (req, res) => {
             },
             { new: true }
         );
-        res.status(200).json(updatedUser);
+        const { password, ...others } = updatedUser._doc;
+        res.status(200).json(others);
     } catch (err) {
         res.status(500).json(err);
     }

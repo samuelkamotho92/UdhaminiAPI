@@ -24,6 +24,10 @@ const ScholarshipSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    photo: {
+        type: String,
+        required: false,
+    },
     premium_tier: {
         type: Boolean,
         required: true,
